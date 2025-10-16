@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres-xgp
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tuPassword
+      POSTGRES_DB: XgpPhotoDb
+      POSTGRES_INITDB_ARGS: '--auth-host=scram-sha-256 --auth-local=scram-sha-256'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - xgp_network
+
+  xgp-api:
+    build: .
+    container_name: xgp-api
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=XgpPhotoDb;Username=postgres;Password=tuPassword"
+      Jwt__Issuer: "XgpPhotoApi"
+      Jwt__Audience: "XgpPhotoClients"
+      Jwt__Key: "clave-super-segura-y-larga-para-firmar-jwt"
+      Jwt__ExpMinutes: "60"
+      AuthClients__0__ClientId: "xgp-web"
+      AuthClients__0__ClientSecret: "Y0urCl13ntS3cret!2025"
+      AuthClients__0__Description: "Frontend local"
+    depends_on:
+      - postgres
+    networks:
+      - xgp_network
+
+volumes:
+  pgdata:
+
+networks:
+  xgp_network:
+    driver: bridge

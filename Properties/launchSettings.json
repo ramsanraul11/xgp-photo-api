@@ -4,8 +4,9 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
+      "launchBrowser": true,
       "applicationUrl": "http://localhost:5153",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -17,7 +18,15 @@
       "launchUrl": "swagger",
       //"applicationUrl": "https://localhost:7150;http://localhost:5153",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ConnectionStrings__DefaultConnection": "Host=dpg-d3oa9eripnbc73fqrmk0-a.frankfurt-postgres.render.com;Database=xgpphotodb;Username=xgp_admin;Password=iIVAsKJXun00S2ZvhcSwXUq2rurQUko3;Port=5432;SSL Mode=Require;Trust Server Certificate=true;",
+        "Jwt__Issuer": "XgpPhotoApi",
+        "Jwt__Audience": "XgpPhotoClients",
+        "Jwt__Key": "clave-super-segura-y-larga-para-firmar-jwt",
+        "Jwt__ExpMinutes": "60",
+        "AuthClients__0__ClientId": "xgp-web",
+        "AuthClients__0__ClientSecret": "Y0urCl13ntS3cret!2025",
+        "AuthClients__0__Description": "Frontend Web principal"
       }
     }
   }
