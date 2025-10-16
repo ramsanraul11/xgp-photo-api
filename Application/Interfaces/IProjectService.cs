@@ -3,5 +3,7 @@
     public interface IProjectService
     {
         Task<IEnumerable<ProjectDto>> GetAllAsync();
+        Task<ProjectDto> CreateAsync(ProjectCreateDto dto);
+        Task<ProjectDto?> UpdateAsync(ProjectUpdateDto dto);
     }
 }

@@ -16,13 +16,15 @@
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, user.Id),
-            new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
-            new(ClaimTypes.Name, user.UserName ?? "")
-        };
+            {
+                new(JwtRegisteredClaimNames.Sub, user.Id),
+                new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+                new(ClaimTypes.Name, user.UserName ?? "")
+            };
 
-            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+            // 👇 AÑADE AMBOS para máxima compatibilidad
+            claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r))); // estándar .NET
+            claims.AddRange(roles.Select(r => new Claim("role", r))); // estándar JWT plano
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

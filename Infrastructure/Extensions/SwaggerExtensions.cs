@@ -5,7 +5,6 @@
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
         {
             services.AddEndpointsApiExplorer();
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -15,20 +14,29 @@
                     Description = "API de gestión de proyectos fotográficos con autenticación JWT"
                 });
 
-                var jwtScheme = new OpenApiSecurityScheme
+                var jwtSecurityScheme = new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
                     Scheme = "bearer",
                     BearerFormat = "JWT",
+                    Name = "Authorization",
                     In = ParameterLocation.Header,
-                    Description = "Introduce: Bearer {tu_token}"
+                    Type = SecuritySchemeType.Http,
+                    Description = "Introduce: **Bearer {tu_token}**",
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
                 };
 
-                c.AddSecurityDefinition("Bearer", jwtScheme);
+                c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    { jwtScheme, Array.Empty<string>() }
+                    {
+                        jwtSecurityScheme,
+                        Array.Empty<string>()
+                    }
                 });
             });
 
