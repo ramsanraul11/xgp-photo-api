@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: xgp-photo-api
+    runtime: docker
+    region: frankfurt
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: Jwt__Issuer
+        value: XgpPhotoApi
+      - key: Jwt__Audience
+        value: XgpPhotoClients
+      - key: Jwt__Key
+        sync: false
