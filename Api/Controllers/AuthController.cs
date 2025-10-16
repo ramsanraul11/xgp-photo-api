@@ -1,4 +1,4 @@
-﻿namespace xgp_photo_api.Controllers
+﻿namespace xgp_photo_api.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -8,12 +8,12 @@
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IAuthClientValidator _clientValidator;
 
-        private readonly JwtTokenService _jwt;
+        private readonly ITokenService _jwt;
 
         public AuthController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            JwtTokenService jwt,
+            ITokenService jwt,
             IAuthClientValidator clientValidator)
         {
             _userManager = userManager;

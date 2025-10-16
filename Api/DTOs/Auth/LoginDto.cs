@@ -1,4 +1,4 @@
-﻿namespace xgp_photo_api.Models
+﻿namespace xgp_photo_api.Api.DTOs.Auth
 {
     public class LoginDto
     {
