@@ -10,6 +10,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 
 // JWT
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.Configure<List<AuthClient>>(builder.Configuration.GetSection("AuthClients"));
+builder.Services.AddScoped<IAuthClientValidator, AuthClientValidator>();
+
 builder.Services.AddScoped<JwtTokenService>();
 
 builder.Services.AddAuthentication(options =>
@@ -68,5 +71,45 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    // 1?? Crear el rol Admin si no existe
+    if (!await roleManager.RoleExistsAsync("Admin"))
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+
+    // 2?? Crear el usuario Admin si no existe
+    var adminEmail = "admin@xgpphoto.local";
+    var adminPassword = "XgpPhoto!2025$Secure";
+
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new IdentityUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(adminUser, adminPassword);
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+            Console.WriteLine($"? Usuario administrador creado: {adminEmail}");
+        }
+        else
+        {
+            Console.WriteLine($"? Error al crear el admin: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+        }
+    }
+    else
+    {
+        Console.WriteLine($"?? El usuario administrador ya existe: {adminEmail}");
+    }
+}
 
 app.Run();
