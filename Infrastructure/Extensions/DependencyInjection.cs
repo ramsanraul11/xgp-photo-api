@@ -13,6 +13,9 @@
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectService, ProjectService>();
+
             return services;
         }
     }

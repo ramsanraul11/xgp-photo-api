@@ -9,6 +9,7 @@
 
             services.AddScoped<IAuthClientValidator, AuthClientValidator>();
             services.AddScoped<ITokenService, JwtTokenService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
