@@ -75,9 +75,6 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    Console.WriteLine("?? Aplicando migraciones...");
-    Console.WriteLine("?? ConnectionString usada:");
-    Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
     db.Database.Migrate();
     Console.WriteLine("? Migraciones aplicadas correctamente.");
 
