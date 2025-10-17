@@ -21,10 +21,13 @@
 
         public async Task<AuthResponseDto?> AuthenticateAsync(LoginDto dto)
         {
-            if (!_clientValidator.Validate(dto.ClientId, dto.ClientSecret))
+            var clientID = dto.ClientId.Trim();
+            var clientSecret = dto.ClientSecret.Trim();
+
+            if (!_clientValidator.Validate(clientID, clientSecret))
                 return null;
 
-            var user = await _userManager.FindByEmailAsync(dto.Email);
+            var user = await _userManager.FindByEmailAsync(dto.Email.ToLower());
             if (user == null)
                 return null;
 
