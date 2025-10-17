@@ -25,6 +25,20 @@
         }
 
         /// <summary>
+        /// Obtener proyecto por id.
+        /// </summary>
+        [HttpGet("{id: guid}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await _service.GetByIdAsync(id);
+
+            if (result is null)
+                return NotFound(new { message = $"No se encontró el proyecto con Id {id}" });
+
+            return Ok(result);
+        }
+        /// <summary>
         /// Crear un nuevo proyecto.
         /// </summary>
         [HttpPost]

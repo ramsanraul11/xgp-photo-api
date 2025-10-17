@@ -15,6 +15,18 @@
             return projects.Select(MapToDto);
         }
 
+        public async Task<ProjectDto?> GetByIdAsync(Guid id)
+        {
+            var project = await _repository.GetByIdAsync(id);
+
+            if (project is null)
+            {
+                return null;
+            }
+
+            return MapToDto(project);
+        }
+
         public async Task<ProjectDto> CreateAsync(ProjectCreateDto dto)
         {
             var project = new Project

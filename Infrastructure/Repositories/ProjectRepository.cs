@@ -11,6 +11,7 @@
 
         public async Task<IEnumerable<Project>> GetAllAsync() =>
             await _context.Projects
+                .AsNoTracking()
                 .Include(p => p.Details)
                 .Where(p => p.IsActive)
                 .OrderByDescending(p => p.CreateDate)
