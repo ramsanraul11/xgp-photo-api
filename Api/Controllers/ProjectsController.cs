@@ -27,7 +27,7 @@
         /// <summary>
         /// Obtener proyecto por id.
         /// </summary>
-        [HttpGet("{id: guid}")]
+        [HttpGet("{id:guid}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetById(Guid id)
         {
